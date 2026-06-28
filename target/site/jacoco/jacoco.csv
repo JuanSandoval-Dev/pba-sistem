@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+pbasistem,com.pba.pbasistem.run,pbasistem,8,0,0,0,4,0,2,0,2,0
+pbasistem,com.pba.pbasistem.model,Usuario,10,28,0,0,3,8,3,8,3,8
+pbasistem,com.pba.pbasistem.model,Categoria,7,17,0,0,2,5,2,5,2,5

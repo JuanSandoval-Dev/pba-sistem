@@ -1,2 +1,3 @@
+com\pba\pbasistem\model\Categoria.class
 com\pba\pbasistem\run\pbasistem.class
-com\pba\pbasistem\model\YourFirstEntity.class
+com\pba\pbasistem\model\Usuario.class
