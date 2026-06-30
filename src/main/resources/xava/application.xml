@@ -2,27 +2,8 @@
 <!DOCTYPE application SYSTEM "dtds/application.dtd">
 
 <application name="pbasistem">
-    <!-- OpenXava genera un módulo CRUD para cada entidad -->
+    <!-- OpenXava genera un modulo CRUD para cada entidad -->
     <default-module>
         <controller name="Typical"/>
     </default-module>
-
-    <!-- Módulos de lista que permiten imprimir o exportar reportes -->
-    <module name="PedidosPorEstado">
-        <model name="Pedido"/>
-        <controller name="Typical"/>
-        <controller name="Print"/>
-    </module>
-
-    <module name="ProductosMasVendidos">
-        <model name="Producto"/>
-        <controller name="Typical"/>
-        <controller name="Print"/>
-    </module>
-
-    <module name="ReclamosPorEstado">
-        <model name="Postventa"/>
-        <controller name="Typical"/>
-        <controller name="Print"/>
-    </module>
 </application>
