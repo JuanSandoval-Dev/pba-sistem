@@ -42,7 +42,6 @@ public class Usuario {
     @Column(nullable = false, length = 20)
     private String rol;
 
-    // Se mantienen porque los tests iniciales usan el nombre password
     public String getPassword() {
         return password;
     }
