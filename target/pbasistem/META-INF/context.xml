@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <JarScanner scanClassPath="false"/>
+    <CookieProcessor sameSiteCookies="lax"/>
+
+    <!-- Cambiar username y password según la instalación local de MySQL -->
+    <Resource name="jdbc/pbasistemDS"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxTotal="20"
+              maxIdle="5"
+              maxWaitMillis="10000"
+              username="root"
+              password=""
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/pba_db?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=America/Lima"/>
+</Context>

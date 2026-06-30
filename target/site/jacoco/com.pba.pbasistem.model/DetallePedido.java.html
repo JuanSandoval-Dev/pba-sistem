@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DetallePedido.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pbasistem</a> &gt; <a href="index.source.html" class="el_package">com.pba.pbasistem.model</a> &gt; <span class="el_source">DetallePedido.java</span></div><h1>DetallePedido.java</h1><pre class="source lang-java linenums">package com.pba.pbasistem.model;
+
+import java.math.BigDecimal;
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.openxava.annotations.DescriptionsList;
+import org.openxava.annotations.ReadOnly;
+import org.openxava.annotations.Stereotype;
+
+@Entity
+@Table(name = &quot;detalles_pedido&quot;)
+@Getter
+@Setter
+<span class="fc" id="L18">public class DetallePedido {</span>
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;pedido_id&quot;, nullable = false)
+    private Pedido pedido;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;producto_id&quot;, nullable = false)
+    @DescriptionsList(descriptionProperties = &quot;nombre&quot;)
+    private Producto producto;
+
+    @Min(1)
+    @Column(nullable = false)
+    private int cantidad;
+
+    @NotNull
+    @DecimalMin(&quot;0.01&quot;)
+    @Stereotype(&quot;MONEY&quot;)
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal precioUnitario;
+
+<span class="fc" id="L45">    @ReadOnly</span>
+    @Stereotype(&quot;MONEY&quot;)
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal subtotal = BigDecimal.ZERO;
+
+    @Transient
+    private boolean ventaRegistrada;
+
+    @PrePersist
+    public void antesDeGuardar() {
+<span class="nc" id="L55">        registrarVenta();</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (pedido != null) {</span>
+<span class="nc" id="L57">            pedido.calcularTotal();</span>
+        }
+<span class="nc" id="L59">    }</span>
+
+    public void registrarVenta() {
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (ventaRegistrada) {</span>
+<span class="nc" id="L63">            return;</span>
+        }
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (producto == null) {</span>
+<span class="nc" id="L66">            throw new IllegalStateException(&quot;Debe seleccionar un producto&quot;);</span>
+        }
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        if (cantidad &lt;= 0) {</span>
+<span class="nc" id="L69">            throw new IllegalArgumentException(&quot;La cantidad debe ser mayor que cero&quot;);</span>
+        }
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (precioUnitario == null) {</span>
+<span class="nc" id="L72">            precioUnitario = producto.getPrecioUnitario();</span>
+        }
+
+<span class="fc" id="L75">        subtotal = precioUnitario.multiply(BigDecimal.valueOf(cantidad));</span>
+<span class="fc" id="L76">        producto.descontarStock(cantidad);</span>
+<span class="fc" id="L77">        ventaRegistrada = true;</span>
+<span class="fc" id="L78">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

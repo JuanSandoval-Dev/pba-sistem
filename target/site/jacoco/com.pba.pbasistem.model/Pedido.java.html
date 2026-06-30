@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Pedido.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pbasistem</a> &gt; <a href="index.source.html" class="el_package">com.pba.pbasistem.model</a> &gt; <span class="el_source">Pedido.java</span></div><h1>Pedido.java</h1><pre class="source lang-java linenums">package com.pba.pbasistem.model;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.openxava.annotations.*;
+
+@Entity
+@Table(name = &quot;pedidos&quot;)
+@Tab(properties = &quot;id, fecha, cliente.razonSocial, canalVenta, estado, total&quot;,
+     defaultOrder = &quot;${fecha} desc&quot;)
+@View(members =
+    &quot;fecha, cliente; canalVenta, estado; &quot;
+    + &quot;detalles { detalles }; &quot;
+    + &quot;total&quot;)
+@View(name = &quot;Factura&quot;, members =
+    &quot;DATOS DEL PEDIDO [ id, fecha; cliente; canalVenta, estado ]; &quot;
+    + &quot;DETALLE DE PRODUCTOS [ detalles ]; &quot;
+    + &quot;TOTAL [ total ]&quot;)
+@Getter
+@Setter
+<span class="fc" id="L28">public class Pedido {</span>
+
+<span class="fc" id="L30">    public enum CanalVenta {</span>
+<span class="fc" id="L31">        WEB, WHATSAPP, DISTRIBUIDOR</span>
+    }
+
+<span class="fc" id="L34">    public enum Estado {</span>
+<span class="fc" id="L35">        PENDIENTE, ENVIADO, ENTREGADO</span>
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+<span class="fc" id="L42">    @NotNull</span>
+    @Column(nullable = false)
+<span class="fc" id="L44">    private LocalDate fecha = LocalDate.now();</span>
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;cliente_id&quot;, nullable = false)
+    @DescriptionsList(descriptionProperties = &quot;razonSocial&quot;)
+    private Cliente cliente;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private CanalVenta canalVenta;
+
+<span class="fc" id="L57">    @NotNull</span>
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Estado estado = Estado.PENDIENTE;
+
+<span class="fc" id="L62">    @Valid</span>
+    @OneToMany(mappedBy = &quot;pedido&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ListProperties(&quot;producto.nombre, cantidad, precioUnitario, subtotal&quot;)
+    private List&lt;DetallePedido&gt; detalles = new ArrayList&lt;&gt;();
+
+<span class="fc" id="L67">    @ReadOnly</span>
+    @Stereotype(&quot;MONEY&quot;)
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal total = BigDecimal.ZERO;
+
+    public void agregarDetalle(DetallePedido detalle) {
+<span class="fc" id="L73">        detalle.setPedido(this);</span>
+<span class="fc" id="L74">        detalle.registrarVenta();</span>
+<span class="fc" id="L75">        detalles.add(detalle);</span>
+<span class="fc" id="L76">        calcularTotal();</span>
+<span class="fc" id="L77">    }</span>
+
+    @PrePersist
+    @PreUpdate
+    public void calcularTotal() {
+<span class="fc" id="L82">        total = BigDecimal.ZERO;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (DetallePedido detalle : detalles) {</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">            if (detalle.getSubtotal() != null) {</span>
+<span class="fc" id="L85">                total = total.add(detalle.getSubtotal());</span>
+            }
+<span class="fc" id="L87">        }</span>
+<span class="fc" id="L88">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

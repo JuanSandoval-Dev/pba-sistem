@@ -1,46 +1,53 @@
-
 package com.pba.pbasistem.model;
 
 import javax.persistence.*;
-import org.openxava.annotations.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.openxava.annotations.DisplaySize;
+import org.openxava.annotations.Stereotype;
 
 @Entity
 @Table(name = "usuarios")
+@Getter
+@Setter
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable=false)
-    @Required
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
     private String nombre;
-    
-    @Column(nullable=false, unique=true)
-    @Required
+
+    @NotBlank
+    @Size(max = 40)
+    @Column(nullable = false, unique = true, length = 40)
     private String usuario;
-    
-    @Column(nullable=false)
-    @Required
+
+    @NotBlank
+    @Size(min = 4, max = 100)
+    @DisplaySize(20)
+    @Stereotype("PASSWORD")
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
-    
-    @Column(nullable=false)
-    @Required
-    @Stereotype("SELECT")
-    private String rol; // Gerente, ventas, almacen, postventa
-    
-    // Getter y setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    @NotBlank
+    @Pattern(regexp = "Gerente|Ventas|Almacén|Postventa",
+            message = "Seleccione un rol válido")
+    @Column(nullable = false, length = 20)
+    private String rol;
 
-    public String getUsuario() { return usuario; }
-    public void setUsuario(String usuario) { this.usuario = usuario; }
+    // Se mantienen porque los tests iniciales usan el nombre password
+    public String getPassword() {
+        return password;
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public String getRol() { return rol; }
-    public void setRol(String rol) { this.rol = rol; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

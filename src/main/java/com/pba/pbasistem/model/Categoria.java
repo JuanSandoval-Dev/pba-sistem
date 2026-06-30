@@ -1,31 +1,32 @@
-
 package com.pba.pbasistem.model;
 
 import javax.persistence.*;
-import org.openxava.annotations.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(name="categorias")
+@Table(name = "categorias")
+@Getter
+@Setter
 public class Categoria {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable=false)
-    @Required
+
+    @NotBlank
+    @Size(max = 60)
+    @Column(nullable = false, unique = true, length = 60)
     private String nombre; // Bioinoculante, bioinsecticida, abono foliar, sustrado´solido
-    
-    @Column
+
+    @Size(max = 250)
+    @Column(length = 250)
     private String descripcion;
-    
-    // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

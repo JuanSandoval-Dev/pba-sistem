@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cliente.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pbasistem</a> &gt; <a href="index.source.html" class="el_package">com.pba.pbasistem.model</a> &gt; <span class="el_source">Cliente.java</span></div><h1>Cliente.java</h1><pre class="source lang-java linenums">package com.pba.pbasistem.model;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.openxava.annotations.Stereotype;
+
+@Entity
+@Table(name = &quot;clientes&quot;)
+@Getter
+@Setter
+<span class="fc" id="L19">public class Cliente {</span>
+
+<span class="fc" id="L21">    public enum Tipo {</span>
+<span class="fc" id="L22">        AGRICULTOR, DISTRIBUIDOR, TIENDA_AGRICOLA</span>
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    @Size(max = 120)
+    @Column(nullable = false, length = 120)
+    private String razonSocial;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 25)
+    private Tipo tipo;
+
+    @NotBlank
+    @Size(max = 60)
+    @Column(nullable = false, length = 60)
+    private String region;
+
+    @NotBlank
+    @Size(max = 20)
+    @Column(nullable = false, length = 20)
+    private String telefono;
+
+    @NotBlank
+    @Email
+    @Stereotype(&quot;EMAIL&quot;)
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
+    private String correo;
+
+<span class="fc" id="L56">    @Valid</span>
+    @OneToMany(mappedBy = &quot;cliente&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List&lt;Contacto&gt; contactos = new ArrayList&lt;&gt;();
+
+    public void agregarContacto(Contacto contacto) {
+<span class="fc" id="L61">        contactos.add(contacto);</span>
+<span class="fc" id="L62">        contacto.setCliente(this);</span>
+<span class="fc" id="L63">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L67">        return razonSocial;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

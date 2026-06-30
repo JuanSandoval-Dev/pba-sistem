@@ -1,47 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Usuario.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pbasistem</a> &gt; <a href="index.source.html" class="el_package">com.pba.pbasistem.model</a> &gt; <span class="el_source">Usuario.java</span></div><h1>Usuario.java</h1><pre class="source lang-java linenums">
-package com.pba.pbasistem.model;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Usuario.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pbasistem</a> &gt; <a href="index.source.html" class="el_package">com.pba.pbasistem.model</a> &gt; <span class="el_source">Usuario.java</span></div><h1>Usuario.java</h1><pre class="source lang-java linenums">package com.pba.pbasistem.model;
 
 import javax.persistence.*;
-import org.openxava.annotations.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.openxava.annotations.DisplaySize;
+import org.openxava.annotations.Stereotype;
 
 @Entity
 @Table(name = &quot;usuarios&quot;)
-<span class="fc" id="L9">public class Usuario {</span>
+@Getter
+@Setter
+<span class="fc" id="L16">public class Usuario {</span>
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable=false)
-    @Required
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
     private String nombre;
-    
-    @Column(nullable=false, unique=true)
-    @Required
+
+    @NotBlank
+    @Size(max = 40)
+    @Column(nullable = false, unique = true, length = 40)
     private String usuario;
-    
-    @Column(nullable=false)
-    @Required
+
+    @NotBlank
+    @Size(min = 4, max = 100)
+    @DisplaySize(20)
+    @Stereotype(&quot;PASSWORD&quot;)
+    @Column(name = &quot;password&quot;, nullable = false, length = 100)
     private String password;
-    
-    @Column(nullable=false)
-    @Required
-    @Stereotype(&quot;SELECT&quot;)
-    private String rol; // Gerente, ventas, almacen, postventa
-    
-    // Getter y setters
-<span class="nc" id="L32">    public Long getId() { return id; }</span>
-<span class="nc" id="L33">    public void setId(Long id) { this.id = id; }</span>
 
-<span class="fc" id="L35">    public String getNombre() { return nombre; }</span>
-<span class="fc" id="L36">    public void setNombre(String nombre) { this.nombre = nombre; }</span>
+    @NotBlank
+    @Pattern(regexp = &quot;Gerente|Ventas|Almacén|Postventa&quot;,
+            message = &quot;Seleccione un rol válido&quot;)
+    @Column(nullable = false, length = 20)
+    private String rol;
 
-<span class="fc" id="L38">    public String getUsuario() { return usuario; }</span>
-<span class="fc" id="L39">    public void setUsuario(String usuario) { this.usuario = usuario; }</span>
+    // Se mantienen porque los tests iniciales usan el nombre password
+    public String getPassword() {
+<span class="nc" id="L47">        return password;</span>
+    }
 
-<span class="nc" id="L41">    public String getPassword() { return password; }</span>
-<span class="fc" id="L42">    public void setPassword(String password) { this.password = password; }</span>
-
-<span class="fc" id="L44">    public String getRol() { return rol; }</span>
-<span class="fc" id="L45">    public void setRol(String rol) { this.rol = rol; }</span>
+    public void setPassword(String password) {
+<span class="fc" id="L51">        this.password = password;</span>
+<span class="fc" id="L52">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
