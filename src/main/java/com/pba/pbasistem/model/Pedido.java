@@ -13,8 +13,13 @@ import org.openxava.annotations.*;
 
 @Entity
 @Table(name = "pedidos")
-@Tab(properties = "id, fecha, cliente.razonSocial, canalVenta, estado, total",
-     defaultOrder = "${fecha} desc")
+@Tabs({
+    @Tab(properties = "id, fecha, cliente.razonSocial, canalVenta, estado, total",
+         defaultOrder = "${fecha} desc"),
+    @Tab(name = "PedidosPorEstado",
+         properties = "estado, id, fecha, cliente.razonSocial, total",
+         defaultOrder = "${estado}, ${fecha} desc")
+})
 @View(members =
     "fecha, cliente; canalVenta, estado; "
     + "detalles { detalles }; "

@@ -6,4 +6,28 @@
     <default-module>
         <controller name="Typical"/>
     </default-module>
+
+    <module name="PedidosPorEstado" folder="Reportes">
+        <env-var name="XAVA_LIST_ACTION" value=""/>
+        <model name="Pedido"/>
+        <tab name="PedidosPorEstado"/>
+        <controller name="Print"/>
+        <controller name="ReportePedidos"/>
+    </module>
+
+    <module name="ProductosMasVendidos" folder="Reportes">
+        <env-var name="XAVA_LIST_ACTION" value=""/>
+        <model name="Producto"/>
+        <tab name="ProductosMasVendidos"/>
+        <controller name="Print"/>
+        <controller name="ReporteProductos"/>
+    </module>
+
+    <module name="ReclamosPorEstado" folder="Reportes">
+        <env-var name="XAVA_LIST_ACTION" value=""/>
+        <model name="Postventa"/>
+        <tab name="ReclamosPorEstado"/>
+        <controller name="Print"/>
+        <controller name="ReporteReclamos"/>
+    </module>
 </application>

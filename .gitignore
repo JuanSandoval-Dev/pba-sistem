@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 target/
 temp/
 *.class
 *.log
+=======
+/target/
+temp/
+>>>>>>> edba34c (Agregue modulos)

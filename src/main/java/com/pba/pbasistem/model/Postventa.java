@@ -11,8 +11,14 @@ import org.openxava.annotations.*;
 
 @Entity
 @Table(name = "postventas")
-@Tab(properties = "fecha, cliente.razonSocial, tipo, estado, fechaResolucion",
-     defaultOrder = "${fecha} desc")
+@Tabs({
+    @Tab(properties = "fecha, cliente.razonSocial, tipo, estado, fechaResolucion",
+         defaultOrder = "${fecha} desc"),
+    @Tab(name = "ReclamosPorEstado",
+         properties = "estado, fecha, cliente.razonSocial, descripcion, fechaResolucion",
+         baseCondition = "${tipo} = 'RECLAMO'",
+         defaultOrder = "${estado}, ${fecha} desc")
+})
 @Getter
 @Setter
 public class Postventa {

@@ -13,8 +13,13 @@ import org.openxava.annotations.*;
 
 @Entity
 @Table(name = "productos")
-@Tab(properties = "nombre, categoria.nombre, unidadMedida, precioUnitario, stockActual, stockMinimo, cantidadVendida",
-     defaultOrder = "${cantidadVendida} desc")
+@Tabs({
+    @Tab(properties = "nombre, categoria.nombre, unidadMedida, precioUnitario, stockActual, stockMinimo, cantidadVendida",
+         defaultOrder = "${cantidadVendida} desc"),
+    @Tab(name = "ProductosMasVendidos",
+         properties = "nombre, categoria.nombre, stockActual, cantidadVendida",
+         defaultOrder = "${cantidadVendida} desc")
+})
 @Getter
 @Setter
 public class Producto {

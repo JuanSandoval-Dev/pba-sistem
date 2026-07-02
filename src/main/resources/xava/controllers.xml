@@ -13,13 +13,28 @@
     	    scope="global"/>    
     -->
     
-    <!-- Controller:
-    <controller name="Teacher">
-    	<extends controller="Typical"/>
-    	<action name="new" icon="library-plus" keystroke="Control N"
-        	class="actions.CreateTeacher">
-    	</action>
-	</controller>    
-    -->
+    <controller name="ReportePedidos">
+        <action name="actualizar" label="Actualizar reporte" icon="refresh"
+                mode="list" on-init="true"
+                class="com.pba.pbasistem.actions.MostrarResumenReporteAction">
+            <set property="tipoReporte" value="PEDIDOS"/>
+        </action>
+    </controller>
+
+    <controller name="ReporteProductos">
+        <action name="actualizar" label="Actualizar reporte" icon="refresh"
+                mode="list" on-init="true"
+                class="com.pba.pbasistem.actions.MostrarResumenReporteAction">
+            <set property="tipoReporte" value="PRODUCTOS"/>
+        </action>
+    </controller>
+
+    <controller name="ReporteReclamos">
+        <action name="actualizar" label="Actualizar reporte" icon="refresh"
+                mode="list" on-init="true"
+                class="com.pba.pbasistem.actions.MostrarResumenReporteAction">
+            <set property="tipoReporte" value="RECLAMOS"/>
+        </action>
+    </controller>
     
 </controllers>
