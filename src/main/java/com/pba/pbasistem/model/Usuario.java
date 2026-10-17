@@ -25,12 +25,12 @@ public class Usuario {
     private String nombre;
 
     @NotBlank
-    @Size(max = 40)
+    @Size(min = 3, max = 40)
     @Column(nullable = false, unique = true, length = 40)
     private String usuario;
 
     @NotBlank
-    @Size(min = 4, max = 100)
+    @Size(min = 6, max = 100)
     @DisplaySize(20)
     @Stereotype("PASSWORD")
     @Column(name = "password", nullable = false, length = 100)

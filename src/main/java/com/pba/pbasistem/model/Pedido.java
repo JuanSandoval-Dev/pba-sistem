@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import lombok.Getter;
 import lombok.Setter;
 import org.openxava.annotations.*;
@@ -45,6 +46,7 @@ public class Pedido {
     private Long id;
 
     @NotNull
+    @PastOrPresent(message = "La fecha del pedido no puede ser futura")
     @Column(nullable = false)
     private LocalDate fecha = LocalDate.now();
 

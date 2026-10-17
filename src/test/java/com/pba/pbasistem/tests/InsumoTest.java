@@ -25,4 +25,13 @@ public class InsumoTest {
         assertSame(proveedor, insumo.getProveedor());
         assertTrue(validador.validate(insumo).isEmpty());
     }
+
+    @Test
+    public void deberiaDetectarInsumoDebajoDelStockMinimo() {
+        Insumo insumo = new Insumo();
+        insumo.setStockActual(2);
+        insumo.setStockMinimo(5);
+
+        assertTrue(insumo.estaBajoStockMinimo());
+    }
 }

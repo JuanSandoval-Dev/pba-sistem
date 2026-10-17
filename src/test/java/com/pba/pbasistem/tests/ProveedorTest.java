@@ -19,6 +19,14 @@ public class ProveedorTest {
         assertEquals("20123456789", proveedor.getRuc());
     }
 
+    @Test
+    public void telefonoInvalidoDeberiaFallar() {
+        Proveedor proveedor = crearProveedor();
+        proveedor.setTelefono("sin-numero");
+
+        assertFalse(validador.validate(proveedor).isEmpty());
+    }
+
     static Proveedor crearProveedor() {
         Proveedor proveedor = new Proveedor();
         proveedor.setNombre("Proveedor de ejemplo");

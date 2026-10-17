@@ -2,6 +2,7 @@ package com.pba.pbasistem.tests;
 
 import com.pba.pbasistem.model.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,14 @@ public class PedidoTest {
                 DetallePedidoTest.crearProducto("Producto B", "15.00", 20), 3));
 
         assertEquals(0, new BigDecimal("65.00").compareTo(pedido.getTotal()));
+    }
+
+    @Test
+    public void fechaFuturaDeberiaFallar() {
+        Pedido pedido = crearPedido();
+        pedido.setFecha(LocalDate.now().plusDays(1));
+
+        assertFalse(validador.validate(pedido).isEmpty());
     }
 
     static Pedido crearPedido() {

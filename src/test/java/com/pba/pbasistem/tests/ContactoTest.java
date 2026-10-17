@@ -26,4 +26,16 @@ public class ContactoTest {
         assertSame(cliente, contacto.getCliente());
         assertTrue(validador.validate(contacto).isEmpty());
     }
+
+    @Test
+    public void telefonoInvalidoDeberiaFallar() {
+        Cliente cliente = ClienteTest.crearCliente();
+        Contacto contacto = new Contacto();
+        contacto.setNombre("María López");
+        contacto.setCargo("Compras");
+        contacto.setTelefono("abc");
+        contacto.setCliente(cliente);
+
+        assertFalse(validador.validate(contacto).isEmpty());
+    }
 }

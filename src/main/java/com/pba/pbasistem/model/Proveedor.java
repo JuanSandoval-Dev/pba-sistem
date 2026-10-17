@@ -28,6 +28,8 @@ public class Proveedor {
     private String ruc;
 
     @NotBlank
+    @Pattern(regexp = "^[0-9+\\- ]{7,20}$",
+            message = "El teléfono solo puede contener números, espacios, + y -")
     @Size(max = 20)
     @Column(nullable = false, length = 20)
     private String telefono;

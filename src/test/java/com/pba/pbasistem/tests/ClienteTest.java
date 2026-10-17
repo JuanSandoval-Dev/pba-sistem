@@ -35,6 +35,14 @@ public class ClienteTest {
         assertFalse(validador.validate(cliente).isEmpty());
     }
 
+    @Test
+    public void telefonoInvalidoDeberiaFallar() {
+        Cliente cliente = crearCliente();
+        cliente.setTelefono("teléfono");
+
+        assertFalse(validador.validate(cliente).isEmpty());
+    }
+
     static Cliente crearCliente() {
         Cliente cliente = new Cliente();
         cliente.setRazonSocial("Asociación Agraria de Ejemplo");

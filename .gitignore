@@ -1,9 +1,27 @@
-<<<<<<< HEAD
+# Maven
 target/
-temp/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Archivos de compilación y temporales
 *.class
 *.log
-=======
-/target/
+*.war
+*.ear
+
+# Eclipse / IDEs adicionales si OpenXava generó
+.settings/
+.project
+.classpath
+
+# OpenXava runtime y base de datos local
+data/
 temp/
->>>>>>> edba34c (Agregue modulos)

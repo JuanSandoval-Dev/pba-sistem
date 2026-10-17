@@ -73,14 +73,27 @@ public class Producto {
     }
 
     public void descontarStock(int cantidad) {
+        validarStockDisponible(cantidad);
+        stockActual = stockActual - cantidad;
+        cantidadVendida = cantidadVendida + cantidad;
+    }
+
+    public void validarStockDisponible(int cantidad) {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que cero");
         }
         if (cantidad > stockActual) {
-            throw new IllegalArgumentException("No hay stock suficiente");
+            throw new IllegalArgumentException(
+                "No hay stock suficiente para el producto seleccionado.");
         }
-        stockActual = stockActual - cantidad;
-        cantidadVendida = cantidadVendida + cantidad;
+    }
+
+    public void devolverStock(int cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor que cero");
+        }
+        stockActual = stockActual + cantidad;
+        cantidadVendida = Math.max(0, cantidadVendida - cantidad);
     }
 
     @Override

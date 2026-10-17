@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class Postventa {
     private Long id;
 
     @NotNull
+    @PastOrPresent(message = "La fecha de postventa no puede ser futura")
     @Column(nullable = false)
     private LocalDate fecha = LocalDate.now();
 
@@ -51,7 +53,7 @@ public class Postventa {
     private Tipo tipo;
 
     @NotBlank
-    @Size(max = 1000)
+    @Size(min = 10, max = 1000)
     @Stereotype("MEMO")
     @Column(nullable = false, length = 1000)
     private String descripcion;

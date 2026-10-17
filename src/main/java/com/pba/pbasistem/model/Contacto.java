@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,8 @@ public class Contacto {
     private String cargo;
 
     @NotBlank
+    @Pattern(regexp = "^[0-9+\\- ]{7,20}$",
+            message = "El teléfono solo puede contener números, espacios, + y -")
     @Size(max = 20)
     @Column(nullable = false, length = 20)
     private String telefono;

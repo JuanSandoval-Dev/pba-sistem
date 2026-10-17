@@ -50,18 +50,92 @@ public class DetallePedido {
     @Transient
     private boolean ventaRegistrada;
 
+    @Transient
+    private Producto productoAnterior;
+
+    @Transient
+    private int cantidadAnterior;
+
+    @PostLoad
+    public void guardarValoresAnteriores() {
+        productoAnterior = producto;
+        cantidadAnterior = cantidad;
+        ventaRegistrada = true;
+    }
+
     @PrePersist
     public void antesDeGuardar() {
         registrarVenta();
-        if (pedido != null) {
-            pedido.calcularTotal();
+        actualizarTotalPedido();
+    }
+
+    @PreUpdate
+    public void antesDeActualizar() {
+        registrarVenta();
+        actualizarTotalPedido();
+    }
+
+    @PreRemove
+    public void antesDeEliminar() {
+        if (!ventaRegistrada) {
+            return;
         }
+
+        Producto productoADevolver =
+            productoAnterior != null ? productoAnterior : producto;
+        int cantidadADevolver =
+            cantidadAnterior > 0 ? cantidadAnterior : cantidad;
+
+        productoADevolver.devolverStock(cantidadADevolver);
+        ventaRegistrada = false;
     }
 
     public void registrarVenta() {
-        if (ventaRegistrada) {
+        validarDatos();
+
+        if (!ventaRegistrada) {
+            producto.descontarStock(cantidad);
+        }
+        else {
+            ajustarStock();
+        }
+
+        calcularSubtotal();
+        productoAnterior = producto;
+        cantidadAnterior = cantidad;
+        ventaRegistrada = true;
+    }
+
+    private void ajustarStock() {
+        if (esMismoProducto(productoAnterior, producto)) {
+            int diferencia = cantidad - cantidadAnterior;
+            if (diferencia > 0) {
+                producto.descontarStock(diferencia);
+            }
+            else if (diferencia < 0) {
+                producto.devolverStock(-diferencia);
+            }
             return;
         }
+
+        producto.validarStockDisponible(cantidad);
+        if (productoAnterior != null && cantidadAnterior > 0) {
+            productoAnterior.devolverStock(cantidadAnterior);
+        }
+        producto.descontarStock(cantidad);
+    }
+
+    private boolean esMismoProducto(Producto anterior, Producto actual) {
+        if (anterior == actual) {
+            return true;
+        }
+        return anterior != null
+            && actual != null
+            && anterior.getId() != null
+            && anterior.getId().equals(actual.getId());
+    }
+
+    private void validarDatos() {
         if (producto == null) {
             throw new IllegalStateException("Debe seleccionar un producto");
         }
@@ -71,10 +145,21 @@ public class DetallePedido {
         if (precioUnitario == null) {
             precioUnitario = producto.getPrecioUnitario();
         }
+        if (precioUnitario == null
+                || precioUnitario.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException(
+                "El precio unitario debe ser mayor que cero");
+        }
+    }
 
+    private void calcularSubtotal() {
         subtotal = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
-        producto.descontarStock(cantidad);
-        ventaRegistrada = true;
+    }
+
+    private void actualizarTotalPedido() {
+        if (pedido != null) {
+            pedido.calcularTotal();
+        }
     }
 
 }
